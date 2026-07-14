@@ -55,7 +55,7 @@ const stack = [
   "TypeScript",
   "Supabase Postgres + Auth",
   "pgvector",
-  "Gemini 2.5 Flash",
+  "Gemini 3.5 Flash",
   "Tailwind CSS v4",
   "Recharts",
   "Vercel",

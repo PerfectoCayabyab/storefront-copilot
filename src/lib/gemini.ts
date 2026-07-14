@@ -1,7 +1,10 @@
 import { GoogleGenAI } from "@google/genai";
 
-// Free-tier models from Google AI Studio.
-export const CHAT_MODEL = "gemini-2.5-flash";
+// Free-tier models from Google AI Studio. gemini-2.5-flash was retired for
+// new API keys, so default to the current stable flash; override via env if
+// this happens again. gemini-embedding-001 still works and must stay fixed —
+// changing it would invalidate the stored 768-dim vectors.
+export const CHAT_MODEL = process.env.GEMINI_MODEL || "gemini-3.5-flash";
 export const EMBEDDING_MODEL = "gemini-embedding-001";
 // Must match the vector(768) column in supabase/migrations/0001_init.sql.
 export const EMBEDDING_DIMS = 768;

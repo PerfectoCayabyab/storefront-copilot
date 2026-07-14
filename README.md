@@ -8,7 +8,7 @@ Built as a full-stack portfolio project by [Perfecto II Cayabyab](https://perfec
 
 - **Auth & multi-tenancy** — Supabase email/password auth; every table is protected by Row Level Security, so tenant isolation is enforced by the database, not just the API.
 - **One-click demo store** — seeds 16 products and 60 days of deterministic order history so reviewers can explore everything in under a minute.
-- **AI product descriptions** — Gemini 2.5 Flash generates or improves product copy in four tones from title, category, and keywords.
+- **AI product descriptions** — Gemini 3.5 Flash generates or improves product copy in four tones from title, category, and keywords.
 - **Catalog Q&A assistant (RAG)** — questions are embedded with `gemini-embedding-001` (768 dims), matched against the store's catalog via pgvector cosine search, and answered with streaming responses grounded in the retrieved products.
 - **Sales dashboard** — 30-day revenue trend chart, stat tiles (revenue, orders, AOV, products), top products by revenue, and recent orders.
 - **Products CRUD** — with automatic vector re-indexing on create/update and cascade cleanup on delete.
@@ -43,7 +43,7 @@ Browser ──► Next.js 16 (App Router, TypeScript, Tailwind v4)
 | Framework  | Next.js 16 (App Router) · React 19 · TypeScript   |
 | Database   | Supabase Postgres + pgvector, Row Level Security  |
 | Auth       | Supabase Auth (`@supabase/ssr`)                   |
-| AI         | Gemini 2.5 Flash + gemini-embedding-001 (free tier) |
+| AI         | Gemini 3.5 Flash + gemini-embedding-001 (free tier) |
 | Styling    | Tailwind CSS v4                                   |
 | Charts     | Recharts                                          |
 | Hosting    | Vercel (free tier)                                |
