@@ -1,0 +1,50 @@
+# Keeps the Supabase free-tier project from auto-pausing (it pauses after
+# ~7 days without activity) by generating real database traffic twice a week.
+#
+# Setup (repo → Settings):
+#   Secrets → Actions:
+#     SUPABASE_URL        e.g. https://abcd1234.supabase.co
+#     SUPABASE_ANON_KEY   the anon/public key
+#   Variables → Actions (optional):
+#     KEEP_ALIVE_URL      the deployed app URL, e.g. https://storefront-copilot.vercel.app
+#
+# Note: GitHub disables scheduled workflows after ~60 days without repo
+# activity — pushing a commit or re-enabling it in the Actions tab revives it.
+
+name: Keep Supabase awake
+
+on:
+  schedule:
+    - cron: "0 9 * * 1,4" # Mondays and Thursdays, 09:00 UTC
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase REST API directly
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_ANON_KEY" ]; then
+            echo "SUPABASE_URL / SUPABASE_ANON_KEY secrets not set — skipping direct ping."
+            exit 0
+          fi
+          curl --silent --fail --show-error \
+            "$SUPABASE_URL/rest/v1/stores?select=id&limit=1" \
+            -H "apikey: $SUPABASE_ANON_KEY" \
+            -H "Authorization: Bearer $SUPABASE_ANON_KEY" \
+            --output /dev/null
+          echo "Supabase pinged."
+
+      - name: Ping the deployed app's health endpoint (optional)
+        env:
+          APP_URL: ${{ vars.KEEP_ALIVE_URL }}
+        run: |
+          if [ -z "$APP_URL" ]; then
+            echo "KEEP_ALIVE_URL variable not set — skipping app ping."
+            exit 0
+          fi
+          curl --silent --fail --show-error "$APP_URL/api/health"
+          echo "App pinged."

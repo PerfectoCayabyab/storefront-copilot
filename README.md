@@ -109,6 +109,16 @@ src/
   components/            UI components (forms, chat, chart, tables)
 ```
 
+## Keep-alive (important on the free tier)
+
+Supabase free projects auto-pause after ~7 days without activity — a paused demo is a dead demo. This repo ships [`.github/workflows/keep-alive.yml`](.github/workflows/keep-alive.yml), which pings the database twice a week (Mon/Thu). After pushing to GitHub:
+
+1. Repo → **Settings → Secrets and variables → Actions → Secrets**: add `SUPABASE_URL` and `SUPABASE_ANON_KEY`.
+2. Optionally add the **Variable** `KEEP_ALIVE_URL` (your Vercel URL) so the workflow also hits the app's `/api/health` endpoint.
+3. Actions tab → run **Keep Supabase awake** once manually to confirm it's green.
+
+GitHub disables scheduled workflows after ~60 days of repo inactivity; any commit (or re-enabling in the Actions tab) revives it.
+
 ## Free-tier notes
 
 - **Supabase**: 500 MB database — far more than this app needs.
